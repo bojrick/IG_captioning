@@ -10,9 +10,9 @@ import torchvision
 
 #https://towardsdatascience.com/building-efficient-custom-datasets-in-pytorch-2563b946fd9f
 class IG_img_caption_dataset(Dataset):
-  def __init__(self, csv_file,prof_type, transform=None):
-    self.type = prof_type
-    self.annotations = csv_file[csv_file['User'] == self.type]
+  def __init__(self, csv_file,type_prof, transform=None):
+    self.type = type_prof
+    self.annotations = csv_file[csv_file['Type']==self.type]
     self.transform = transform
     
   def __len__(self):
@@ -23,7 +23,9 @@ class IG_img_caption_dataset(Dataset):
     image = io.imread(img_path,plugin='pil')
     #image = image.astype(np.uint8)
     caption_path = self.annotations.iloc[index,3]
-    caption = clean_text(open(caption_path,'r',encoding='utf8').read().split())
+    caption = clean_text(
+      open(caption_path,'r',encoding='utf8').read()
+      .split())
     sample = {'image':image,'caption':caption}
 
     if self.transform:
