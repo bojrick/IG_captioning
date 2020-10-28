@@ -5,6 +5,7 @@ from glob import glob
 from collections import defaultdict
 import re
 import string
+from itertools import chain, repeat, islice
 
 #os.chdir('d:\\IG Data\\')
 def create_file_paths_dict(data_path):
@@ -84,14 +85,25 @@ def decontracted(phrase):
     phrase = re.sub(r"\'m", " am", phrase)
     return phrase
 
+def pad_infinite(iterable, padding=None):
+   return chain(iterable, repeat(padding))
+
+def pad(iterable, size, padding=None):
+   return islice(pad_infinite(iterable, padding), size)
+
 def clean_text(sentence):
   decontraction = " ".join([decontracted(word.strip()) for word in sentence])
   clean_regex = re.compile('<.*?>')
   word = re.sub(clean_regex,' ', decontraction)
   #pattern = r"[{}]".format(string.punctuation)
   #pharse = re.sub(pattern,' ',word)
-  clean_text = [word.lower() for word in word.split() if word]
-  return clean_text
+  cleantext = [word for word in word.split() if word]
+  cleantext.insert(0,"<SOS>")
+  cleantext.insert(len(cleantext),"<EOS>")
+  return list(pad(cleantext,10000,'<pad>'))
 
-def add_eos(sent):
-    
+
+
+
+
+
