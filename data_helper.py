@@ -92,3 +92,6 @@ def clean_text(sentence):
   #pharse = re.sub(pattern,' ',word)
   clean_text = [word.lower() for word in word.split() if word]
   return clean_text
+
+def add_eos(sent):
+    

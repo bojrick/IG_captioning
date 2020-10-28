@@ -4,7 +4,7 @@ import numpy as np
 from PIL import Image
 
 from torch.utils.data import Dataset,DataLoader
-import torchvision.transforms as transforms
+import torchvision.transforms as transforms,ToTensor
 from skimage import io
 import torchvision
 
